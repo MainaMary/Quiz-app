@@ -9,6 +9,8 @@ interface Props {
     category: string,
     type: string
   ) => Promise<void>;
+  data: any[];
+  setData: React.Dispatch<any>;
 }
 interface IProps {
   children: React.ReactNode;
@@ -17,6 +19,7 @@ export const UserContext = createContext({} as Props);
 const UserProvider = ({ children }: IProps) => {
   const [name, setName] = useState<string>("");
   const [score, setScore] = useState<number>(0);
+  const [data, setData] = useState<any>([]);
 
   const fetchQuestions = async (
     level: string,
@@ -28,10 +31,12 @@ const UserProvider = ({ children }: IProps) => {
     const url =
       "https://opentdb.com/api.php?amount=10&category=11&difficulty=medium&type=boolean";
     const res = await axios.get(url);
-    console.log(res.data);
+    setData(res?.data);
   };
   return (
-    <UserContext.Provider value={{ name, setName, score, fetchQuestions }}>
+    <UserContext.Provider
+      value={{ name, setName, score, fetchQuestions, data, setData }}
+    >
       {children}
     </UserContext.Provider>
   );
