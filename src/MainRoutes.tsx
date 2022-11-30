@@ -2,17 +2,14 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import Quiz from "./pages/Quiz";
 import QuizResults from "./pages/QuizResults";
 import Form from "./pages/Form";
+import FinalResults from "./pages/FinalResults";
 
 const MainRoutes = () => {
   const ListRoutes = [
     { component: <HomePage />, path: "/" },
-    {
-      component: <Quiz />,
-      path: "/quiz",
-    },
+
     {
       component: <QuizResults />,
       path: "/quizResults",
@@ -20,6 +17,10 @@ const MainRoutes = () => {
     {
       component: <Form />,
       path: "/form",
+    },
+    {
+      component: <FinalResults />,
+      path: "/finalResults",
     },
   ];
   return (
