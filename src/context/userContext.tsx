@@ -12,6 +12,8 @@ interface Props {
   data: any[];
   setData: React.Dispatch<any>;
   setScore: React.Dispatch<React.SetStateAction<number>>;
+  loading: boolean;
+  error: string;
 }
 interface IProps {
   children: React.ReactNode;
@@ -21,6 +23,8 @@ const UserProvider = ({ children }: IProps) => {
   const [name, setName] = useState<string>("");
   const [score, setScore] = useState<number>(0);
   const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   const fetchQuestions = async (
     level: string,
@@ -29,13 +33,33 @@ const UserProvider = ({ children }: IProps) => {
   ) => {
     console.log(level, category, type);
     //const url = `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${level}&type=${type}`;
-    const url = `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${level}&type=${type}`;
-    const res = await axios.get(url);
-    setData(res?.data?.results);
+    setLoading(true);
+    try {
+      const url = `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${level}&type=${type}`;
+      const res = await axios.get(url);
+      setData(res?.data?.results);
+      setLoading(false);
+
+      setError("");
+    } catch (error) {
+      console.log(error, "error");
+      setError("An error occurred");
+      setLoading(false);
+    }
   };
   return (
     <UserContext.Provider
-      value={{ name, setName, score, setScore, fetchQuestions, data, setData }}
+      value={{
+        name,
+        setName,
+        score,
+        setScore,
+        fetchQuestions,
+        data,
+        setData,
+        loading,
+        error,
+      }}
     >
       {children}
     </UserContext.Provider>
